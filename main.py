@@ -8,7 +8,7 @@ class GameLauncher:
     def __init__(self, root):
         self.root = root
         self.root.title("Instituto de Formación Docente y Técnica N° 28 Anexo 328 - Norberto De La Riestra")
-        self.root.geometry("1024x680")
+        self.root.geometry("1024x600")
         self.root.resizable(False, False)
         
         # Centrar la ventana
@@ -89,6 +89,21 @@ class GameLauncher:
         )
         pong_button.pack(pady=10)
         
+        brick_button = tk.Button(
+            button_frame,
+            text="BRICK BREAKER",
+            font=("Arial", 16, "bold"),
+            bg="#5b65ec",
+            fg='white',
+            width=15,
+            height=2,
+            command=self.launch_brick,
+            relief='raised',
+            bd=3,
+            cursor='hand2'
+        )
+        brick_button.pack(pady=10)
+        
         # Botón para salir
         exit_button = tk.Button(
             button_frame,
@@ -108,7 +123,6 @@ class GameLauncher:
         # Información sobre controles
         controls_label = tk.Label(
             self.root,
-            text="Controles:\nSnake: W,A,S,D | Tetris: Flechas + ↑ para rotar",
             font=("Arial", 10),
             fg='#7f8c8d',
             bg='#2c3e50',
@@ -122,7 +136,7 @@ class GameLauncher:
         width = self.root.winfo_width()
         height = self.root.winfo_height()
         x = (self.root.winfo_screenwidth() // 2) - (width // 2)
-        y = (self.root.winfo_screenheight() // 2) - (height // 2)
+        y = (self.root.winfo_screenheight() // 5) - (height // 5)
         self.root.geometry(f'{width}x{height}+{x}+{y}')
     
     def launch_snake(self):
@@ -180,6 +194,25 @@ class GameLauncher:
             self.root.deiconify()
         except FileNotFoundError:
             messagebox.showerror("Error", "No se encontró el archivo pong_game.py")
+            self.root.deiconify()
+    
+    def launch_brick(self):
+        """Ejecuta el juego Brick Breaker"""
+        try:
+            
+            self.root.withdraw()
+            
+            
+            subprocess.run([sys.executable, "brick_breaker_game.py"], check=True)
+            
+            
+            self.root.deiconify()
+            
+        except subprocess.CalledProcessError:
+            messagebox.showerror("Error", "No se pudo ejecutar el juego Brick Breaker")
+            self.root.deiconify()
+        except FileNotFoundError:
+            messagebox.showerror("Error", "No se encontró el archivo brick_breaker_game.py")
             self.root.deiconify()
     
     def exit_app(self):

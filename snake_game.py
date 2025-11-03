@@ -112,13 +112,13 @@ while True:
             sys.exit()
         # Si se presiona una tecla
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_w:
+            if event.key == pygame.K_UP:
                 change_to = 'UP'
-            if event.key == pygame.K_s:
+            if event.key == pygame.K_DOWN:
                 change_to = 'DOWN'
-            if event.key == pygame.K_a:
+            if event.key == pygame.K_LEFT:
                 change_to = 'LEFT'
-            if event.key == pygame.K_d:
+            if event.key == pygame.K_RIGHT:
                 change_to = 'RIGHT'
 
     # Evitar que la serpiente se mueva en direcciones opuestas

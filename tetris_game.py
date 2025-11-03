@@ -169,7 +169,7 @@ while not juego_terminado:
 # Pantalla final
 pantalla.fill(NEGRO)
 fuente = pygame.font.SysFont("Arial", 36)
-texto = fuente.render("GAME OVER", True, ROJO)
+texto = fuente.render("Juego Terminado", True, ROJO)
 pantalla.blit(texto, (ANCHO // 2 - 100, ALTO // 2 - 30))
 pygame.display.flip()
 pygame.time.wait(2000)
