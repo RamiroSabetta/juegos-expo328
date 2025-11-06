@@ -187,10 +187,24 @@ def populateBlocks(blockWidth, blockHeight,
 # Once all the lives are over, this function waits until
 # exit or space bar is pressed and does the corresponding action
 def gameOver():
-    gameOver = True
-
-    while gameOver:
-        # Event handling
+    # Mostrar mensaje de game over
+    gameOverFont = pygame.font.Font('freesansbold.ttf', 36)
+    messageText = gameOverFont.render("Te quedaste sin intentos", True, WHITE)
+    messageRect = messageText.get_rect()
+    messageRect.center = (WIDTH // 2, HEIGHT // 2)
+    
+    screen.fill(BLACK)
+    screen.blit(messageText, messageRect)
+    pygame.display.update()
+    
+    # Esperar 2 segundos o hasta que se presione espacio
+    waiting = True
+    start_time = pygame.time.get_ticks()
+    while waiting:
+        current_time = pygame.time.get_ticks()
+        if current_time - start_time > 2000:  # 2 segundos
+            return True
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
@@ -205,13 +219,13 @@ def main():
     lives = 3
     score = 0
 
-    scoreText = font.render("score", True, WHITE)
+    scoreText = font.render("Puntos", True, WHITE)
     scoreTextRect = scoreText.get_rect()
-    scoreTextRect.center = (20, HEIGHT-10)
+    scoreTextRect.topleft = (10, HEIGHT-25)
 
-    livesText = font.render("Lives", True, WHITE)
+    livesText = font.render("Vidas", True, WHITE)
     livesTextRect = livesText.get_rect()
-    livesTextRect.center = (120, HEIGHT-10)
+    livesTextRect.topleft = (120, HEIGHT-25)
 
     striker = Striker(0, HEIGHT-50, 100, 20, 10, WHITE)
     strikerXFac = 0
@@ -230,8 +244,8 @@ def main():
         screen.blit(scoreText, scoreTextRect)
         screen.blit(livesText, livesTextRect)
 
-        scoreText = font.render("Score : " + str(score), True, WHITE)
-        livesText = font.render("Lives : " + str(lives), True, WHITE)
+        scoreText = font.render("Puntos : " + str(score), True, WHITE)
+        livesText = font.render("Vidas : " + str(lives), True, WHITE)
 
         # If all the blocks are destroyed, then we repopulate them
         if not listOfBlocks:
@@ -240,13 +254,19 @@ def main():
 
         # All the lives are over. So, the gameOver() function is called
         if lives <= 0:
-            running = gameOver()
-
+            shouldContinue = gameOver()
+            if not shouldContinue:
+                running = False
+                break
+            # Reiniciar el juego
             while listOfBlocks:
                 listOfBlocks.pop(0)
 
             lives = 3
             score = 0
+            striker = Striker(0, HEIGHT-50, 100, 20, 10, WHITE)
+            strikerXFac = 0
+            ball = Ball(0, HEIGHT-150, 7, 5, WHITE)
             listOfBlocks = populateBlocks(
                 blockWidth, blockHeight, horizontalGap, verticalGap)
 
